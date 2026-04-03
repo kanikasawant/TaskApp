@@ -15,6 +15,6 @@ class Task(Base):
     description = Column(String, nullable=True)
     status = Column(String, default="pending")
     due_date = Column(Date, nullable=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
 
