@@ -6,6 +6,7 @@ import TaskCard from "../components/TaskCard";
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   
@@ -42,11 +43,12 @@ export default function Dashboard() {
     }
     try {
       await API.post("/tasks", {
-        title,
-        description: "",
+        title: title.trim(),
+        description: description.trim(),
         due_date: new Date().toISOString().split("T")[0],
       });
       setTitle("");
+      setDescription("");
       showToast("Task added");
       fetchTasks();
     } catch {
@@ -165,7 +167,7 @@ export default function Dashboard() {
           <h3 className="mb-4 text-lg font-bold text-slate-900">
             Create New Task
           </h3>
-          <div className="flex gap-3">
+          <div className="space-y-3">
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -173,12 +175,21 @@ export default function Dashboard() {
               className="flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
               placeholder="What needs to be done?"
             />
-            <button
-              onClick={addTask}
-              className="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-500 px-5 py-3 font-semibold text-white shadow-[0_8px_24px_rgba(79,70,229,0.35)] transition hover:-translate-y-0.5 hover:from-indigo-700 hover:to-violet-600"
-            >
-              Add
-            </button>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              placeholder="Add a short description (optional)"
+            />
+            <div className="flex justify-end">
+              <button
+                onClick={addTask}
+                className="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-500 px-5 py-3 font-semibold text-white shadow-[0_8px_24px_rgba(79,70,229,0.35)] transition hover:-translate-y-0.5 hover:from-indigo-700 hover:to-violet-600"
+              >
+                Add
+              </button>
+            </div>
           </div>
         </section>
 
